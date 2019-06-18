@@ -175,7 +175,7 @@ test 'Should_donate_user' do
     visit('http://localhost:3000/')
     click_on('Discover Talk Show Hosts')
     click_link('Phineas')
-    click_on(text: 'Donate $2.00!')
+    click_on(text: 'Donate $2.00!', :match => :first)
     fill_in(id:'card_number', with:'4242424242424242')
     select("2020", from: 'card_year')
     click_on('Purchase')

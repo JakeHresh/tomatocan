@@ -107,8 +107,8 @@ class EventsTest < ActionDispatch::IntegrationTest
   end
   test "test if the home link works" do
     click_on('FAQ', match: :first)
-    click_on('Home')
-    assert_text('Doing Purposeful Work?');
+    click_on('Home', match: :first)
+    assert_text('JOIN OUR LIVESTREAMS');
   end
   test "test if the offer rewards button works" do
     #signup()
@@ -128,8 +128,8 @@ class EventsTest < ActionDispatch::IntegrationTest
     assert_text('t accessing my mic or webcam')
   end
   test "Test if the About link at the bottom of the home page redirects properly" do
-    click_on('About')
-    assert_text('What is CrowdPublish.TV?')
+    click_on('About', match: :first)
+    assert_text('What is CrowdPublish TV?')
   end
   test "terms of service link should redirect to the right page" do
     click_on('Terms of Service')
@@ -229,7 +229,7 @@ class EventsTest < ActionDispatch::IntegrationTest
   end
   test "test if home link works while home" do
     click_on('Home')
-    assert_text('Doing Purposeful Work?')
+    assert_text('JOIN OUR LIVESTREAMS')
   end
   test "discover talk show hosts link should work in the navbar" do
     click_on('Discover Talk Show Hosts')
@@ -291,7 +291,23 @@ class EventsTest < ActionDispatch::IntegrationTest
     # assert_text('Facebook Timeline Post from Me')
   end
   test "sales tab should render purchased items" do
-      createReward()
+      click_on('Sign out')
+      visit ('/')
+      click_on('Sign Up', match: :first)
+      fill_in(id:'user_name', with: 'name')
+      fill_in(id:'user_email', with: 'e@gmail.com')
+      fill_in(id:'user_permalink', with:'username')
+      fill_in(id:'user_password', with: 'password', :match => :prefer_exact)
+      fill_in(id:'user_password_confirmation', with:'password')
+      click_on(class: 'form-control btn-primary')
+      click_on('name')
+      click_on('Control Panel')
+      click_on('Rewards')
+      click_on(class: 'btn btn-lg btn-warning', match: :first)
+      fill_in(id: 'merchandise_name', with: 'Shoe')
+      fill_in(id: 'merchandise_price', with: '5')
+      fill_in(id: 'merchandise_desc', with: 'this is a description')
+      click_on(class: 'btn btn-lg btn-primary')
       visit('/')
       click_on('Sign out')
       visit('http://localhost:3000/username')
