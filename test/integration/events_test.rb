@@ -60,8 +60,9 @@ class EventsTest < ActionDispatch::IntegrationTest
     click_on('Host A Show')
     fill_in(id:'event_name', with: 'Intern')
     fill_in(id:'event_desc', with: 'This is a description of the event')
-    click_button(id: 'eventSubmit')
-    #assert_text('Intern')#does the event show up on the homepage?
+    # click_button('eventSubmit')
+    click_on(class: 'btn btn-lg btn-primary')
+    assert_text('Intern')#does the event show up on the homepage?
     #click_on('Sign out')
     #click_on('Join Discussion')
     #assert_text('Live Show')
@@ -327,6 +328,59 @@ class EventsTest < ActionDispatch::IntegrationTest
   end
   test "link to reward on live show page redirects" do
   end
+  test "Should render event name on homepage" do
+      visit("/")
+      assert_text('eventTwo')
+  end
+  test "Should edit event name" do
+      click_on('Sign out')
+      click_on('Sign In', match: :first)
+      fill_in(id: 'user_email', with: 'dontchangethisemail@orthisfixture.entry')
+      fill_in(id: 'user_password', with: 'user1234')
+      click_on(class: 'form-control btn-primary')
+      click_on(text: 'eventTwo')
+      click_on(text: 'Edit')
+      fill_in(id: 'event_name', with: 'event2')
+      click_on('Update Event')
+      assert_text('event2')
+  end
+  test "Should fail to edit event due to end date preceding start date" do
+      click_on('Sign out')
+      click_on('Sign In', match: :first)
+      fill_in(id: 'user_email', with: 'dontchangethisemail@orthisfixture.entry')
+      fill_in(id: 'user_password', with: 'user1234')
+      click_on(class: 'form-control btn-primary')
+      click_on(text: 'eventTwo')
+      click_on(text: 'Edit')
+      select("2", from: 'event_start_at_3i')
+      select("1", from: 'event_end_at_3i')
+      click_on('Update Event')
+      assert_text('End at End time must be after start time')
+  end
+  test "Should_update_event_description" do
+      click_on('Sign out')
+      click_on('Sign In', match: :first)
+      fill_in(id: 'user_email', with: 'dontchangethisemail@orthisfixture.entry')
+      fill_in(id: 'user_password', with: 'user1234')
+      click_on(class: 'form-control btn-primary')
+      click_on(text: 'eventTwo')
+      click_on(text: 'Edit')
+      fill_in(id: 'event_desc', with: 'This is MY EVENT. Back off...')
+      click_on('Update Event')
+      assert_text('This is MY EVENT. Back off...')
+  end
+  test "Should update event time" do
+      click_on('Sign out')
+      click_on('Sign In', match: :first)
+      fill_in(id: 'user_email', with: 'dontchangethisemail@orthisfixture.entry')
+      fill_in(id: 'user_password', with: 'user1234')
+      click_on(class: 'form-control btn-primary')
+      click_on(text: 'eventTwo')
+      click_on(text: 'Edit')
+      select("16", from: 'event_start_at_3i')
+      select("17", from: 'event_end_at_3i')
+      click_on('Update Event')
+      assert_text('16')
+    end
+    
 end
-
-
