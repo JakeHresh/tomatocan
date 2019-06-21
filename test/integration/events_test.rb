@@ -62,7 +62,6 @@ class EventsTest < ActionDispatch::IntegrationTest
     fill_in(id:'event_desc', with: 'This is a description of the event')
     # click_button('eventSubmit')
     click_on('eventSubmit')
-    save_and_open_page
     assert_text('Intern')#does the event show up on the homepage?
     #click_on('Sign out')
     #click_on('Join Discussion')
@@ -340,7 +339,7 @@ class EventsTest < ActionDispatch::IntegrationTest
       fill_in(id: 'user_password', with: 'user1234')
       click_on(class: 'form-control btn-primary')
       click_on(text: 'eventTwo')
-      click_on(text: 'Edit')
+      click_on(text: 'Edit', match: :first)
       fill_in(id: 'event_name', with: 'event2')
       click_on('Update Event')
       assert_text('event2')
@@ -352,7 +351,7 @@ class EventsTest < ActionDispatch::IntegrationTest
       fill_in(id: 'user_password', with: 'user1234')
       click_on(class: 'form-control btn-primary')
       click_on(text: 'eventTwo')
-      click_on(text: 'Edit')
+      click_on(text: 'Edit', match: :first)
       select("2", from: 'event_start_at_3i')
       select("1", from: 'event_end_at_3i')
       click_on('Update Event')
@@ -365,7 +364,7 @@ class EventsTest < ActionDispatch::IntegrationTest
       fill_in(id: 'user_password', with: 'user1234')
       click_on(class: 'form-control btn-primary')
       click_on(text: 'eventTwo')
-      click_on(text: 'Edit')
+      click_on(text: 'Edit', match: :first)
       fill_in(id: 'event_desc', with: 'This is MY EVENT. Back off...')
       click_on('Update Event')
       assert_text('This is MY EVENT. Back off...')
@@ -377,11 +376,21 @@ class EventsTest < ActionDispatch::IntegrationTest
       fill_in(id: 'user_password', with: 'user1234')
       click_on(class: 'form-control btn-primary')
       click_on(text: 'eventTwo')
-      click_on(text: 'Edit')
+      click_on(text: 'Edit', match: :first)
       select("16", from: 'event_start_at_3i')
       select("17", from: 'event_end_at_3i')
       click_on('Update Event')
       assert_text('16')
     end
-
+  test "Should render upcoming shows" do
+      click_on('Sign out')
+      click_on('Sign In', match: :first)
+      fill_in(id: 'user_email', with: 'dontchangethisemail@orthisfixture.entry')
+      fill_in(id: 'user_password', with: 'user1234')
+      click_on(class: 'form-control btn-primary')
+      click_on('name2', match: :first)
+      click_on('Control Panel')
+      click_on('Shows')
+      assert_text('eventTwo')
+  end
 end
