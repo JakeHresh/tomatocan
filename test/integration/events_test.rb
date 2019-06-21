@@ -61,7 +61,8 @@ class EventsTest < ActionDispatch::IntegrationTest
     fill_in(id:'event_name', with: 'Intern')
     fill_in(id:'event_desc', with: 'This is a description of the event')
     # click_button('eventSubmit')
-    click_on(class: 'btn btn-lg btn-primary')
+    click_on('eventSubmit')
+    save_and_open_page
     assert_text('Intern')#does the event show up on the homepage?
     #click_on('Sign out')
     #click_on('Join Discussion')
@@ -382,5 +383,5 @@ class EventsTest < ActionDispatch::IntegrationTest
       click_on('Update Event')
       assert_text('16')
     end
-    
+
 end
